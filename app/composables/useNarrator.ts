@@ -15,7 +15,7 @@ export const NARRATOR = {
 }
 
 const KEY = 'rl-narrator'
-const enabled = ref(true)
+const enabled = ref(false)
 let loaded = false
 // One intro per dungeon, even across "Same dungeon again".
 const introCache = new Map<string, { title: string; lines: string[] }>()
@@ -79,7 +79,7 @@ export function useNarrator() {
   function load() {
     if (loaded || !import.meta.client) return
     loaded = true
-    try { enabled.value = localStorage.getItem(KEY) !== 'off' } catch {}
+    try { enabled.value = localStorage.getItem(KEY) === 'on' } catch {}
   }
   function setEnabled(on: boolean) {
     enabled.value = on
