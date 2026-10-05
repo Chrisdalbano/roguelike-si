@@ -40,6 +40,7 @@ onNuxtReady(() => {
     <HowItWorks class="wrap" />
     <footer class="wrap foot">
       <a href="https://chrisdalbano.com">Made by Chris D'Albano</a>
+      <span>The domain roguelike.si is for sale. <a href="https://chrisdalbano.com">Get in touch</a>.</span>
     </footer>
   </div>
 </template>
