@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { RunSummary } from '~~/lib'
 
-const props = defineProps<{ summary: RunSummary; themeName: string }>()
+const props = defineProps<{ summary: RunSummary; themeName: string; epitaph?: string | null }>()
 const emit = defineEmits<{ again: []; exit: [] }>()
 
 const heading = computed(() => ({ won: 'You made it out.', dead: 'Dead.', timeout: 'Out of time.', playing: 'Still down there.' })[props.summary.status])
@@ -26,7 +26,7 @@ onMounted(() => again.value?.focus())
   <div class="end" :class="summary.status">
     <p class="era">{{ themeName }}</p>
     <h2>{{ heading }}</h2>
-    <p class="epitaph">{{ summary.epitaph }}</p>
+    <p class="epitaph" aria-live="polite">{{ epitaph || summary.epitaph }}</p>
     <dl class="stats">
       <div><dt>Score</dt><dd class="score">{{ summary.score }}</dd></div>
       <div><dt>Floor</dt><dd>{{ summary.floor }}/4</dd></div>

@@ -2,12 +2,14 @@
 import { THEMES, intro, type Action, type Dir, type RenderView, type RunConfig } from '~~/lib'
 import { Renderer } from '~/game/renderer'
 import { itemSprite } from '~/game/sprites'
+import { compose } from '~/audio/music'
+import { createSfx } from '~/audio/sfx'
 
 const props = defineProps<{ config: RunConfig }>()
 const emit = defineEmits<{ again: []; exit: [] }>()
 
 const theme = THEMES[props.config.theme]
-const story = intro(props.config)
+const story = ref(intro(props.config))
 const phase = ref<'intro' | 'play' | 'end'>('intro')
 const screenEl = ref<HTMLElement | null>(null)
 const canvasEl = ref<HTMLCanvasElement | null>(null)
@@ -16,19 +18,42 @@ const crt = ref(true)
 let renderer: Renderer | null = null
 let pending: RenderView | null = null
 
-const { view, result, dispatch, startClock } = useRun(props.config, v => (renderer ? renderer.apply(v) : (pending = v)))
+// ---- audio + narrator (cosmetic; never touches the simulation) -----------------
+const { music } = useAudio()
+const narrator = useNarrator()
+const song = compose(props.config.seed, props.config.theme)
+const sfx = createSfx(props.config.seed, props.config.theme, { boss: () => music.sting() })
+const aiEpitaph = ref<string | null>(null)
+let cancelIntro = () => {}
+
+const { view, result, dispatch, startClock } = useRun(props.config, (v) => {
+  if (renderer) renderer.apply(v); else pending = v
+  sfx.onView(v)
+  if (v.status === 'playing' && phase.value === 'play') music.setLevel(v.timeLeftMs <= 60_000 ? 'tense' : 'full')
+})
 
 function act(a: Action) {
   if (phase.value === 'intro') { if (a.type === 'descend' || a.type === 'wait') begin(); return }
-  if (phase.value === 'play') dispatch(a)
+  if (phase.value !== 'play') return
+  const before = view.value.turns
+  dispatch(a)
+  if (a.type === 'move' && view.value.turns === before && view.value.status === 'playing') sfx.bump()
 }
 const { send } = useControls(screenEl, act, () => phase.value !== 'end')
 
 function begin() {
+  if (phase.value !== 'intro') return
+  cancelIntro() // too late to swap the card: drop the request
   phase.value = 'play'
+  music.play(song, 'full')
   startClock()
 }
-watch(result, r => { if (r) setTimeout(() => (phase.value = 'end'), r.status === 'won' ? 1600 : 1300) })
+watch(result, (r) => {
+  if (!r) return
+  music.stop(r.status === 'won' ? 0.4 : 1.2)
+  narrator.epitaph(r, theme, view.value.log, view.value.timeLeftMs, text => (aiEpitaph.value = text))
+  setTimeout(() => (phase.value = 'end'), r.status === 'won' ? 1600 : 1300)
+})
 
 // ---- HUD derived state ------------------------------------------------------
 const v = computed(() => view.value)
@@ -70,6 +95,8 @@ onMounted(() => {
   window.addEventListener('resize', fit)
   if (pending) renderer.apply(pending)
   renderer.start()
+  music.play(song, 'thin')
+  cancelIntro = narrator.intro(props.config, theme, story.value, (s) => { if (phase.value === 'intro') story.value = s })
 })
 onBeforeUnmount(() => {
   renderer?.stop(); ro?.disconnect()
@@ -122,7 +149,7 @@ const arrows: Record<string, string> = { n: '▲', s: '▼', w: '◀', e: '▶',
       </div>
     </div>
 
-    <EndScreen v-if="phase === 'end' && result" :summary="result" :theme-name="theme.name" @again="emit('again')" @exit="emit('exit')" />
+    <EndScreen v-if="phase === 'end' && result" :summary="result" :theme-name="theme.name" :epitaph="aiEpitaph" @again="emit('again')" @exit="emit('exit')" />
     <div v-else class="below">
       <ol class="log" aria-live="polite">
         <li v-if="onStairs" class="stairs">Stairs. Press Enter to descend.</li>
@@ -147,6 +174,7 @@ const arrows: Record<string, string> = { n: '▲', s: '▼', w: '◀', e: '▶',
           <div class="row">
             <button type="button" class="descend" :class="{ ready: onStairs }" @click="send({ type: 'descend' })">Descend &gt;</button>
             <button type="button" class="quiet" :aria-pressed="crt" @click="toggleCrt">CRT {{ crt ? 'on' : 'off' }}</button>
+            <AudioControls />
             <button type="button" class="quiet" @click="emit('exit')">Quit</button>
           </div>
         </div>

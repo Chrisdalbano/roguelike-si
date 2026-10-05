@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { THEMES, createRun, dailyRun, type RunConfig, type ThemeId } from '~~/lib'
 import { actorSprite } from '~/game/sprites'
+import { compose } from '~/audio/music'
 
 const emit = defineEmits<{ start: [config: RunConfig] }>()
 const PLACEHOLDER = 'mummy heist under a dying sun'
@@ -24,6 +25,13 @@ function play() {
   emit('start', chosen.value ? { ...run, theme: chosen.value } : run)
 }
 function pick(id: ThemeId) { chosen.value = chosen.value === id ? null : id }
+
+// Title music: a thin loop in the locked era (medieval until one is picked).
+const { music } = useAudio()
+const narrator = useNarrator()
+const titleSong = () => compose('roguelike.si', chosen.value ?? 'medieval')
+onMounted(() => music.play(titleSong(), 'thin'))
+watch(chosen, () => music.play(titleSong(), 'thin'))
 </script>
 
 <template>
@@ -56,6 +64,15 @@ function pick(id: ThemeId) { chosen.value = chosen.value === id ? null : id }
       </div>
     </fieldset>
 
+    <div class="settings">
+      <AudioControls />
+      <label class="narrator">
+        <input type="checkbox" :checked="narrator.enabled.value" @change="narrator.setEnabled(($event.target as HTMLInputElement).checked)">
+        <span>AI narrator (experimental)</span>
+      </label>
+      <p class="disclose"><span>When on, the prompt you type is sent to a free third-party text API (Pollinations) to rewrite the intro and epitaph. Everything else, including the dungeon, runs locally. Daily and shared runs never use it.</span></p>
+    </div>
+
     <div class="daily">
       <button type="button" :disabled="!daily" @click="daily && emit('start', daily)">Daily run</button>
       <span v-if="daily">Same dungeon for everyone today, {{ daily.seed.slice(6) }} UTC: {{ THEMES[daily.theme].name }}.</span>
@@ -82,6 +99,11 @@ input:focus { outline: none; border-color: var(--accent-lead); }
 .name { font-size: 14px; font-weight: 600; }
 .tones { display: flex; }
 .tones i { width: 14px; height: 8px; display: block; }
+.settings { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-family: var(--font-mono); font-size: 12px; color: var(--fg-muted); }
+.narrator { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; text-transform: none; letter-spacing: 0; font-size: 12px; margin: 0; color: var(--fg-secondary); }
+.narrator input { accent-color: var(--accent-lead); width: 16px; height: 16px; margin: 0; }
+.disclose { flex-basis: 100%; margin: 0; line-height: 1.5; }
+.disclose span { display: block; max-width: 72ch; }
 .daily { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 12px; color: var(--fg-muted); }
 button { font: inherit; color: var(--fg-primary); background: var(--bg-surface); border: 1px solid var(--border); border-radius: 0; padding: 10px 16px; cursor: pointer; }
 .daily button { font-family: var(--font-mono); font-size: 13px; }

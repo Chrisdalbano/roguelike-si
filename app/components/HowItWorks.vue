@@ -6,6 +6,12 @@
         <h3>Procedural</h3>
         <p>Your prompt is the seed. Keywords pick one of six eras; everything else falls out of a seeded generator: four 28 by 18 floors (rooms and corridors, or cellular caves), enemies, loot, shrines, the premise you read before the clock starts, and the epitaph you get after.</p>
         <p>Same prompt, same dungeon, on any machine. The sprites are hand-drawn 8 by 8 bitmaps in the source, recoloured from each era's four-tone palette.</p>
+        <p>The sound is synthesised in your browser too: square, triangle and noise voices, no audio files. Each dungeon's music is composed from its seed, in the era's own scale and tempo, so the same seed always plays the same tune.</p>
+      </div>
+      <div>
+        <h3>Optional narrator</h3>
+        <p>If you type a prompt and leave "AI narrator" on, your prompt and the run's facts (floor, kills, time left, how it ended) go to Pollinations, a free third-party text model, which may rewrite the intro card and the epitaph. The game never waits for it: the procedural text shows first and stays if the answer is slow, blocked or malformed.</p>
+        <p>It only changes those words. The dungeon, the rules, your score and the share text are all procedural and identical with it on or off. Daily runs and shared links never call it.</p>
       </div>
       <div>
         <h3>Rules</h3>
