@@ -97,6 +97,9 @@ const arrows: Record<string, string> = { n: '▲', s: '▼', w: '◀', e: '▶',
       </div>
       <div><span class="k">ATK</span> {{ v.hero.atk }} <span class="k">DEF</span> {{ v.hero.def }}</div>
       <div><span class="k">FLOOR</span> {{ v.floor }}/{{ v.floors }}</div>
+      <div v-for="m in v.meters ?? []" :key="m.id" class="meter" :class="{ danger: m.danger }">
+        <span class="k">{{ m.label.toUpperCase() }}</span> {{ Math.ceil(m.value) }}<template v-if="m.id !== 'keys'">/{{ m.max }}</template>
+      </div>
       <div class="score"><span class="k">SCORE</span> {{ v.score }}</div>
       <div class="clock" :aria-label="`Doom clock ${clock}`">{{ clock }}</div>
     </header>
@@ -161,6 +164,7 @@ const arrows: Record<string, string> = { n: '▲', s: '▼', w: '◀', e: '▶',
 .bar { display: inline-block; width: 90px; height: 8px; background: var(--bg-elevated); position: relative; }
 .bar > span { position: absolute; inset: 0 auto 0 0; background: var(--accent-lead); transition: width .2s steps(4); }
 .n { min-width: 5ch; }
+.meter.danger, .meter.danger .k { color: var(--accent-lead); }
 .clock { margin-left: auto; font-size: 22px; font-weight: 700; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
 .urgent .clock { color: var(--accent-lead); }
 .critical .clock { color: var(--accent-lead); animation: blink .5s steps(2, jump-none) infinite; }
