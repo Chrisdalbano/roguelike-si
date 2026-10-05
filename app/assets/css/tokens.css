@@ -1,0 +1,32 @@
+/* Brand tokens, mirrored from chrisdalbano.com (Editorial / After Dark). Primitives -> semantics. */
+:root {
+  --p-paper: #f3f0e8; --p-ink: #181916; --p-cobalt: #2947d7;
+  --p-night: #111310; --p-bone: #f1eee5; --p-orange: #ff9858;
+  --p-paper-surface: #e8e5dc; --p-paper-elevated: #dedbd2;
+  --p-ink-secondary: #52554e; --p-ink-muted: #62665d;
+  --p-paper-border: #c9cbc0; --p-paper-border-strong: #9c9f94;
+  --p-night-surface: #1e211c; --p-night-elevated: #2a2e26;
+  --p-bone-secondary: #bdbfb3; --p-bone-muted: #9da493;
+  --p-night-border: #373c32; --p-night-border-strong: #626959;
+  --font-sans: 'Inter Variable', 'Inter', Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --container-max: 1440px; --container-max-prose: 68ch;
+  --gutter: clamp(24px, 4.45vw, 64px); --section-py: clamp(64px, 8vw, 120px);
+  --radius: 0px;
+}
+html, html[data-variant="paper"] {
+  color-scheme: light;
+  --bg-canvas: var(--p-paper); --bg-surface: var(--p-paper-surface); --bg-elevated: var(--p-paper-elevated);
+  --fg-primary: var(--p-ink); --fg-secondary: var(--p-ink-secondary); --fg-muted: var(--p-ink-muted);
+  --accent-lead: var(--p-cobalt); --accent-lead-foreground: var(--p-paper);
+  --border: var(--p-paper-border); --border-strong: var(--p-paper-border-strong);
+  --link-fg: var(--accent-lead);
+}
+html[data-variant="night"] {
+  color-scheme: dark;
+  --bg-canvas: var(--p-night); --bg-surface: var(--p-night-surface); --bg-elevated: var(--p-night-elevated);
+  --fg-primary: var(--p-bone); --fg-secondary: var(--p-bone-secondary); --fg-muted: var(--p-bone-muted);
+  --accent-lead: var(--p-orange); --accent-lead-foreground: var(--p-night);
+  --border: var(--p-night-border); --border-strong: var(--p-night-border-strong);
+  --link-fg: var(--accent-lead);
+}
