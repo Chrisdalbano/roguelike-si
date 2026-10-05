@@ -22,7 +22,7 @@ jobs:
           node-version: 22
           cache: npm
       - uses: actions/configure-pages@v5
-      - run: npm ci
+      - run: rm -f package-lock.json && npm install --no-audit --no-fund  # lockfile is generated on Windows and lacks Linux native bindings
       - run: npm run daily
       - run: npm test
       - run: npx tsc -p lib/tsconfig.json
