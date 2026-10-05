@@ -1,0 +1,6 @@
+roguelike.si
+A free five-minute turn-based 8-bit browser roguelike. Four deterministic procedural floors, six themes, and a final boss. No account or server simulation.
+
+https://roguelike.si/api/daily.json - UTC date, RunConfig, procedural intro, and full dungeon (string-grid rows, legend, enemies and items). Regenerated daily.
+https://roguelike.si/api/themes.json - theme IDs, names, keyword lists and five-color palettes.
+https://roguelike.si/?seed=SEED&theme=THEME - replay a seed; URL-encode both values.

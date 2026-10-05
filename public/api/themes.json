@@ -1,0 +1,124 @@
+{
+  "egypt": {
+    "id": "egypt",
+    "name": "Tomb of the Sun King",
+    "blurb": "Steal the last warmth of a dying sun.",
+    "keywords": [
+      "egypt",
+      "pharaoh",
+      "mummy",
+      "mummies",
+      "tomb",
+      "pyramid",
+      "sun"
+    ],
+    "palette": {
+      "bg": "#171322",
+      "dark": "#483044",
+      "mid": "#af7049",
+      "light": "#f4d58d",
+      "accent": "#f9b233"
+    }
+  },
+  "zombie": {
+    "id": "zombie",
+    "name": "Last Light Mall",
+    "blurb": "Outrun the hunger behind the shutters.",
+    "keywords": [
+      "zombie",
+      "zombies",
+      "mall",
+      "undead",
+      "outbreak",
+      "horde"
+    ],
+    "palette": {
+      "bg": "#101b18",
+      "dark": "#294437",
+      "mid": "#71834b",
+      "light": "#d8dc9b",
+      "accent": "#ef6658"
+    }
+  },
+  "future": {
+    "id": "future",
+    "name": "Neon Singularity",
+    "blurb": "Break the machine that owns tomorrow.",
+    "keywords": [
+      "future",
+      "robot",
+      "robots",
+      "space",
+      "cyber",
+      "neon",
+      "alien"
+    ],
+    "palette": {
+      "bg": "#101024",
+      "dark": "#292855",
+      "mid": "#6555a1",
+      "light": "#c4e7ee",
+      "accent": "#47ffcf"
+    }
+  },
+  "steampunk": {
+    "id": "steampunk",
+    "name": "The Brass Below",
+    "blurb": "Silence the engine beneath the city.",
+    "keywords": [
+      "steampunk",
+      "steam",
+      "brass",
+      "clockwork",
+      "gear",
+      "factory"
+    ],
+    "palette": {
+      "bg": "#201b19",
+      "dark": "#493c35",
+      "mid": "#99734b",
+      "light": "#ead2a3",
+      "accent": "#ff854a"
+    }
+  },
+  "medieval": {
+    "id": "medieval",
+    "name": "Ashen Crown",
+    "blurb": "Claim a crown that remembers its dead.",
+    "keywords": [
+      "medieval",
+      "knight",
+      "dragon",
+      "castle",
+      "dungeon",
+      "sword"
+    ],
+    "palette": {
+      "bg": "#171724",
+      "dark": "#36394d",
+      "mid": "#777b92",
+      "light": "#dfd8c8",
+      "accent": "#be434d"
+    }
+  },
+  "deepsea": {
+    "id": "deepsea",
+    "name": "Abyssal Choir",
+    "blurb": "Bring a stolen voice back to the surface.",
+    "keywords": [
+      "deepsea",
+      "ocean",
+      "sea",
+      "underwater",
+      "abyss",
+      "submarine"
+    ],
+    "palette": {
+      "bg": "#081923",
+      "dark": "#15394b",
+      "mid": "#307889",
+      "light": "#a1d9c4",
+      "accent": "#fa87b0"
+    }
+  }
+}

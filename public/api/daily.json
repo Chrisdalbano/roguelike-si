@@ -1,0 +1,780 @@
+{
+  "date": "2026-10-05",
+  "config": {
+    "seed": "daily-2026-10-05",
+    "theme": "steampunk",
+    "prompt": ""
+  },
+  "intro": {
+    "title": "The royal blueprint",
+    "lines": [
+      "A dying courier sent you to the boiler cathedral.",
+      "Recover the royal blueprint before the last five minutes burn away.",
+      "Four descents. One Grand Engine. Leave a name worth remembering."
+    ]
+  },
+  "dungeon": {
+    "config": {
+      "seed": "daily-2026-10-05",
+      "theme": "steampunk",
+      "prompt": ""
+    },
+    "theme": "steampunk",
+    "width": 28,
+    "height": 18,
+    "legend": {
+      "void": " ",
+      "floor": ".",
+      "wall": "#",
+      "door": "+",
+      "stairs": ">",
+      "hazard": "^",
+      "chest": "$",
+      "shrine": "*"
+    },
+    "intro": {
+      "title": "The royal blueprint",
+      "lines": [
+        "A dying courier sent you to the boiler cathedral.",
+        "Recover the royal blueprint before the last five minutes burn away.",
+        "Four descents. One Grand Engine. Leave a name worth remembering."
+      ]
+    },
+    "floors": [
+      {
+        "floor": 1,
+        "generator": "rooms",
+        "rows": [
+          "############################",
+          "##################^......###",
+          "##################.......###",
+          "###.........+...^........###",
+          "#################........###",
+          "#################........###",
+          "###############..........###",
+          "#######..............$...###",
+          "#######.#######.$.......####",
+          "#####....########.###...####",
+          "#####....########.###...####",
+          "#####............*.......###",
+          "#####>...########........###",
+          "###############*.........###",
+          "###############.....#....###",
+          "###############.....#....###",
+          "############################",
+          "############################"
+        ],
+        "start": {
+          "x": 3,
+          "y": 3
+        },
+        "stairs": {
+          "x": 5,
+          "y": 12
+        },
+        "enemies": [
+          {
+            "id": 1,
+            "x": 20,
+            "y": 1,
+            "sprite": "grunt",
+            "name": "Automaton",
+            "hp": 8,
+            "maxHp": 8,
+            "atk": 3
+          },
+          {
+            "id": 2,
+            "x": 18,
+            "y": 3,
+            "sprite": "brute",
+            "name": "Boiler Golem",
+            "hp": 17,
+            "maxHp": 17,
+            "atk": 6
+          },
+          {
+            "id": 3,
+            "x": 21,
+            "y": 1,
+            "sprite": "ranged",
+            "name": "Rivet Gunner",
+            "hp": 7,
+            "maxHp": 7,
+            "atk": 3
+          },
+          {
+            "id": 4,
+            "x": 23,
+            "y": 15,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 4,
+            "maxHp": 4,
+            "atk": 2
+          },
+          {
+            "id": 53,
+            "x": 22,
+            "y": 8,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 4,
+            "maxHp": 4,
+            "atk": 2
+          },
+          {
+            "id": 5,
+            "x": 15,
+            "y": 15,
+            "sprite": "grunt",
+            "name": "Automaton",
+            "hp": 8,
+            "maxHp": 8,
+            "atk": 3
+          },
+          {
+            "id": 6,
+            "x": 21,
+            "y": 14,
+            "sprite": "brute",
+            "name": "Boiler Golem",
+            "hp": 17,
+            "maxHp": 17,
+            "atk": 6
+          }
+        ],
+        "items": [
+          {
+            "x": 21,
+            "y": 6,
+            "sprite": "heal"
+          },
+          {
+            "x": 18,
+            "y": 14,
+            "sprite": "heal"
+          },
+          {
+            "x": 22,
+            "y": 9,
+            "sprite": "weapon"
+          },
+          {
+            "x": 22,
+            "y": 3,
+            "sprite": "armor"
+          },
+          {
+            "x": 17,
+            "y": 3,
+            "sprite": "bomb"
+          },
+          {
+            "x": 24,
+            "y": 7,
+            "sprite": "key"
+          },
+          {
+            "x": 24,
+            "y": 15,
+            "sprite": "relic"
+          }
+        ]
+      },
+      {
+        "floor": 2,
+        "generator": "rooms",
+        "rows": [
+          "############################",
+          "############################",
+          "####......##################",
+          "###.......##################",
+          "####.......#######....######",
+          "####.....#.#######....######",
+          "#####..........$......######",
+          "#........#.#######.#########",
+          "#.............##.....#######",
+          "#.......$...........*#######",
+          "###^..........##....>#######",
+          "###..+.....^..##############",
+          "###..*........##############",
+          "###....#####################",
+          "###....#####################",
+          "############################",
+          "############################",
+          "############################"
+        ],
+        "start": {
+          "x": 3,
+          "y": 3
+        },
+        "stairs": {
+          "x": 20,
+          "y": 10
+        },
+        "enemies": [
+          {
+            "id": 101,
+            "x": 17,
+            "y": 8,
+            "sprite": "grunt",
+            "name": "Automaton",
+            "hp": 10,
+            "maxHp": 10,
+            "atk": 4
+          },
+          {
+            "id": 102,
+            "x": 7,
+            "y": 5,
+            "sprite": "brute",
+            "name": "Boiler Golem",
+            "hp": 19,
+            "maxHp": 19,
+            "atk": 7
+          },
+          {
+            "id": 103,
+            "x": 10,
+            "y": 5,
+            "sprite": "ranged",
+            "name": "Rivet Gunner",
+            "hp": 9,
+            "maxHp": 9,
+            "atk": 4
+          },
+          {
+            "id": 104,
+            "x": 19,
+            "y": 4,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 6,
+            "maxHp": 6,
+            "atk": 3
+          },
+          {
+            "id": 153,
+            "x": 10,
+            "y": 4,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 4,
+            "maxHp": 4,
+            "atk": 2
+          },
+          {
+            "id": 105,
+            "x": 6,
+            "y": 9,
+            "sprite": "grunt",
+            "name": "Automaton",
+            "hp": 10,
+            "maxHp": 10,
+            "atk": 4
+          },
+          {
+            "id": 106,
+            "x": 8,
+            "y": 8,
+            "sprite": "brute",
+            "name": "Boiler Golem",
+            "hp": 19,
+            "maxHp": 19,
+            "atk": 7
+          },
+          {
+            "id": 107,
+            "x": 12,
+            "y": 11,
+            "sprite": "ranged",
+            "name": "Rivet Gunner",
+            "hp": 9,
+            "maxHp": 9,
+            "atk": 4
+          },
+          {
+            "id": 108,
+            "x": 2,
+            "y": 9,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 6,
+            "maxHp": 6,
+            "atk": 3
+          },
+          {
+            "id": 157,
+            "x": 10,
+            "y": 7,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 4,
+            "maxHp": 4,
+            "atk": 2
+          }
+        ],
+        "items": [
+          {
+            "x": 10,
+            "y": 10,
+            "sprite": "heal"
+          },
+          {
+            "x": 15,
+            "y": 9,
+            "sprite": "heal"
+          },
+          {
+            "x": 16,
+            "y": 8,
+            "sprite": "weapon"
+          },
+          {
+            "x": 12,
+            "y": 9,
+            "sprite": "armor"
+          },
+          {
+            "x": 3,
+            "y": 14,
+            "sprite": "bomb"
+          },
+          {
+            "x": 12,
+            "y": 12,
+            "sprite": "key"
+          },
+          {
+            "x": 19,
+            "y": 10,
+            "sprite": "time"
+          }
+        ]
+      },
+      {
+        "floor": 3,
+        "generator": "cellular-cave",
+        "rows": [
+          "############################",
+          "#########.#############..###",
+          "########...###########....##",
+          "###..###..############....##",
+          "##........#############..###",
+          "##.........##.....######.###",
+          "##........^.........####..##",
+          "##........................##",
+          "##..............*..+......##",
+          "##........................##",
+          "##.................*......##",
+          "##.......................^##",
+          "##$.......................##",
+          "##....#...###...........$.##",
+          "##....#######............>##",
+          "###...#######.....###....###",
+          "############################",
+          "############################"
+        ],
+        "start": {
+          "x": 3,
+          "y": 3
+        },
+        "stairs": {
+          "x": 25,
+          "y": 14
+        },
+        "enemies": [
+          {
+            "id": 201,
+            "x": 15,
+            "y": 5,
+            "sprite": "grunt",
+            "name": "Automaton",
+            "hp": 12,
+            "maxHp": 12,
+            "atk": 5
+          },
+          {
+            "id": 202,
+            "x": 23,
+            "y": 9,
+            "sprite": "brute",
+            "name": "Boiler Golem",
+            "hp": 21,
+            "maxHp": 21,
+            "atk": 8
+          },
+          {
+            "id": 203,
+            "x": 24,
+            "y": 14,
+            "sprite": "ranged",
+            "name": "Rivet Gunner",
+            "hp": 11,
+            "maxHp": 11,
+            "atk": 5
+          },
+          {
+            "id": 204,
+            "x": 5,
+            "y": 6,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 8,
+            "maxHp": 8,
+            "atk": 4
+          },
+          {
+            "id": 253,
+            "x": 19,
+            "y": 13,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 4,
+            "maxHp": 4,
+            "atk": 2
+          },
+          {
+            "id": 205,
+            "x": 5,
+            "y": 13,
+            "sprite": "grunt",
+            "name": "Automaton",
+            "hp": 12,
+            "maxHp": 12,
+            "atk": 5
+          },
+          {
+            "id": 206,
+            "x": 14,
+            "y": 6,
+            "sprite": "brute",
+            "name": "Boiler Golem",
+            "hp": 21,
+            "maxHp": 21,
+            "atk": 8
+          },
+          {
+            "id": 207,
+            "x": 3,
+            "y": 12,
+            "sprite": "ranged",
+            "name": "Rivet Gunner",
+            "hp": 11,
+            "maxHp": 11,
+            "atk": 5
+          },
+          {
+            "id": 208,
+            "x": 24,
+            "y": 2,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 8,
+            "maxHp": 8,
+            "atk": 4
+          },
+          {
+            "id": 257,
+            "x": 3,
+            "y": 11,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 4,
+            "maxHp": 4,
+            "atk": 2
+          },
+          {
+            "id": 209,
+            "x": 14,
+            "y": 10,
+            "sprite": "grunt",
+            "name": "Automaton",
+            "hp": 12,
+            "maxHp": 12,
+            "atk": 5
+          },
+          {
+            "id": 210,
+            "x": 18,
+            "y": 7,
+            "sprite": "brute",
+            "name": "Boiler Golem",
+            "hp": 21,
+            "maxHp": 21,
+            "atk": 8
+          }
+        ],
+        "items": [
+          {
+            "x": 24,
+            "y": 11,
+            "sprite": "heal"
+          },
+          {
+            "x": 9,
+            "y": 3,
+            "sprite": "heal"
+          },
+          {
+            "x": 6,
+            "y": 5,
+            "sprite": "weapon"
+          },
+          {
+            "x": 12,
+            "y": 7,
+            "sprite": "armor"
+          },
+          {
+            "x": 22,
+            "y": 13,
+            "sprite": "bomb"
+          },
+          {
+            "x": 17,
+            "y": 7,
+            "sprite": "key"
+          },
+          {
+            "x": 4,
+            "y": 13,
+            "sprite": "relic"
+          }
+        ]
+      },
+      {
+        "floor": 4,
+        "generator": "rooms",
+        "rows": [
+          "############################",
+          "##################......####",
+          "##################......####",
+          "###........^.........$...###",
+          "##############...........###",
+          "#......#######...+........##",
+          "#...................#.....##",
+          "#.........^....*..........##",
+          "#......#######......#.....##",
+          "#......######......##.######",
+          "###......###.......##.######",
+          "###....$..............######",
+          "###>.....##.......##########",
+          "###########....*..##########",
+          "###########....#############",
+          "############################",
+          "############################",
+          "############################"
+        ],
+        "start": {
+          "x": 3,
+          "y": 3
+        },
+        "stairs": {
+          "x": 3,
+          "y": 12
+        },
+        "enemies": [
+          {
+            "id": 301,
+            "x": 7,
+            "y": 12,
+            "sprite": "grunt",
+            "name": "Automaton",
+            "hp": 14,
+            "maxHp": 14,
+            "atk": 6
+          },
+          {
+            "id": 302,
+            "x": 10,
+            "y": 3,
+            "sprite": "brute",
+            "name": "Boiler Golem",
+            "hp": 23,
+            "maxHp": 23,
+            "atk": 9
+          },
+          {
+            "id": 303,
+            "x": 9,
+            "y": 11,
+            "sprite": "ranged",
+            "name": "Rivet Gunner",
+            "hp": 13,
+            "maxHp": 13,
+            "atk": 6
+          },
+          {
+            "id": 304,
+            "x": 16,
+            "y": 7,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 10,
+            "maxHp": 10,
+            "atk": 5
+          },
+          {
+            "id": 353,
+            "x": 6,
+            "y": 5,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 4,
+            "maxHp": 4,
+            "atk": 2
+          },
+          {
+            "id": 305,
+            "x": 1,
+            "y": 5,
+            "sprite": "grunt",
+            "name": "Automaton",
+            "hp": 14,
+            "maxHp": 14,
+            "atk": 6
+          },
+          {
+            "id": 306,
+            "x": 22,
+            "y": 7,
+            "sprite": "brute",
+            "name": "Boiler Golem",
+            "hp": 23,
+            "maxHp": 23,
+            "atk": 9
+          },
+          {
+            "id": 307,
+            "x": 6,
+            "y": 11,
+            "sprite": "ranged",
+            "name": "Rivet Gunner",
+            "hp": 13,
+            "maxHp": 13,
+            "atk": 6
+          },
+          {
+            "id": 308,
+            "x": 5,
+            "y": 5,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 10,
+            "maxHp": 10,
+            "atk": 5
+          },
+          {
+            "id": 357,
+            "x": 11,
+            "y": 11,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 4,
+            "maxHp": 4,
+            "atk": 2
+          },
+          {
+            "id": 309,
+            "x": 18,
+            "y": 3,
+            "sprite": "grunt",
+            "name": "Automaton",
+            "hp": 14,
+            "maxHp": 14,
+            "atk": 6
+          },
+          {
+            "id": 310,
+            "x": 22,
+            "y": 4,
+            "sprite": "brute",
+            "name": "Boiler Golem",
+            "hp": 23,
+            "maxHp": 23,
+            "atk": 9
+          },
+          {
+            "id": 311,
+            "x": 4,
+            "y": 5,
+            "sprite": "ranged",
+            "name": "Rivet Gunner",
+            "hp": 13,
+            "maxHp": 13,
+            "atk": 6
+          },
+          {
+            "id": 312,
+            "x": 20,
+            "y": 4,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 10,
+            "maxHp": 10,
+            "atk": 5
+          },
+          {
+            "id": 361,
+            "x": 13,
+            "y": 10,
+            "sprite": "swarm",
+            "name": "Cogling",
+            "hp": 4,
+            "maxHp": 4,
+            "atk": 2
+          },
+          {
+            "id": 399,
+            "x": 3,
+            "y": 12,
+            "sprite": "boss",
+            "name": "Grand Engine",
+            "hp": 32,
+            "maxHp": 32,
+            "atk": 7
+          }
+        ],
+        "items": [
+          {
+            "x": 10,
+            "y": 11,
+            "sprite": "heal"
+          },
+          {
+            "x": 24,
+            "y": 5,
+            "sprite": "heal"
+          },
+          {
+            "x": 2,
+            "y": 7,
+            "sprite": "weapon"
+          },
+          {
+            "x": 6,
+            "y": 8,
+            "sprite": "armor"
+          },
+          {
+            "x": 18,
+            "y": 5,
+            "sprite": "bomb"
+          },
+          {
+            "x": 19,
+            "y": 6,
+            "sprite": "key"
+          },
+          {
+            "x": 8,
+            "y": 10,
+            "sprite": "relic"
+          }
+        ]
+      }
+    ]
+  }
+}
