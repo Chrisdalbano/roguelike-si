@@ -84,6 +84,8 @@ export interface RenderView {
   floors: number // total floors in the run
   /** Doom clock. Run is designed to last ~5 minutes of real time. */
   timeLeftMs: number
+  /** Theme resources; max is a display scale for uncapped counters (curse/keys). */
+  meters?: { id: string; label: string; value: number; max: number; danger: boolean }[]
   inventory: InventorySlot[]
   /** Newest last. Themed, procedurally written. */
   log: string[]

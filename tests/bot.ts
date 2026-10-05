@@ -25,7 +25,7 @@ export function greedyAction(state: GameState): Action {
     if (i === p || !Number.isFinite(dist[i])) continue
     let score = Infinity
     if (!c.seen) score = dist[i] + 9
-    if (c.item) score = dist[i] - 5
+    if (c.item && (v.inventory.length < 5 || c.item === 'key' || c.item === 'relic')) score = dist[i] - 5
     if (c.tile === 'stairs' && v.floor < 4) score = dist[i] + 5
     if (c.tile === 'shrine' && v.hero.hp < 25) score = dist[i] - 3
     if (c.actor?.sprite === 'boss') score = dist[i] - 10

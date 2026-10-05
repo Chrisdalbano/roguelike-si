@@ -8,7 +8,7 @@ export const RUN_MS = 300_000
 export interface State extends GameState {
   config: RunConfig; floors: Floor[]; floor: number; hero: RenderView['hero']; inventory: InventorySlot[]
   timeLeftMs: number; turns: number; status: RenderView['status']; score: number; kills: number
-  log: string[]; events: GameEvent[]; cause: string; curse: number; noise: number; oxygen: number
+  log: string[]; events: GameEvent[]; cause: string; keys?: number; curse: number; noise: number; oxygen: number
 }
 const state = (s: GameState) => s as State
 const current = (s: State) => s.floors[s.floor - 1]!
@@ -28,16 +28,16 @@ export function newGame(config: RunConfig): GameState {
     __brand: 'GameState', config: { ...config }, floors, floor: 1,
     hero: { x: start % W, y: Math.floor(start / W), hp: 38, maxHp: 38, atk: 5, def: 1 },
     inventory: [], timeLeftMs: RUN_MS, turns: 0, status: 'playing', score: 0, kills: 0,
-    log: intro(config).lines, events: [], cause: '', curse: 0, noise: 0, oxygen: 70,
+    log: intro(config).lines, events: [], cause: '', keys: 1, curse: 0, noise: 0, oxygen: 70,
   }
-  s.inventory = [slot(s, 'heal'), slot(s, 'bomb'), slot(s, 'key')]
+  s.inventory = [slot(s, 'heal'), slot(s, 'bomb')]
   say(s, {
     egypt: 'Opening chests raises your curse. Shrines cleanse it.',
     zombie: 'Combat makes noise; the horde hears you. Quiet turns let it fade.',
     future: 'Blue doors consume a Power Cell. Without one, force the lock for 3 HP.',
     steampunk: 'Vents fire every third turn. Watch your footing.',
     medieval: 'Shrines trade 5 HP for 1 attack. Bump one to accept.',
-    deepsea: 'Oxygen: 70. Each turn costs air. Shrines refill your tank.',
+    deepsea: 'Oxygen: 70. Each turn costs a quarter unit of air. Shrines refill your tank.',
   }[config.theme])
   reveal(s); return s
 }
@@ -64,9 +64,14 @@ function heal(s: State, amount: number) {
 function pickup(s: State) {
   const f = current(s), i = f.items.findIndex(i => i.x === s.hero.x && i.y === s.hero.y)
   if (i < 0) return
-  const item = f.items.splice(i, 1)[0]!
+  const item = f.items[i]!
+  if (item.sprite !== 'key' && item.sprite !== 'relic' && s.inventory.length >= 5) {
+    say(s, `Pack full. ${slot(s, item.sprite).name} stays here.`); return
+  }
+  f.items.splice(i, 1)
   s.events.push({ type: 'pickup', item: item.sprite, at: [item.x, item.y] })
   if (item.sprite === 'relic') s.score += 100
+  else if (item.sprite === 'key') s.keys = keyCount(s) + 1
   else s.inventory.push(slot(s, item.sprite))
   say(s, `Recovered ${slot(s, item.sprite).name}.`)
 }
@@ -88,7 +93,7 @@ function enemies(s: State) {
     if (manhattan === 1 || ranged || pulse) {
       const dmg = Math.max(1, e.atk + (pulse ? 2 : 0) - s.hero.def)
       s.events.push({ type: 'attack', id: e.id, target: 0, dmg, at: [s.hero.x, s.hero.y] })
-      hurt(s, dmg, e.name); continue
+      say(s, `${e.name} strikes you for ${dmg}.`); hurt(s, dmg, e.name); continue
     }
     const candidates = neighbors(p).filter(n => walkable(f.tiles[n]) && f.tiles[n] !== 'door' && n !== pos(s) && !f.enemies.some(other => other.x === n % W && other.y === Math.floor(n / W)))
     const retreat = e.sprite === 'ranged' && manhattan < 3
@@ -107,13 +112,17 @@ function environment(s: State) {
   if (theme === 'egypt' && s.curse >= 2 && s.turns % 6 === 0) { say(s, `Curse ${s.curse}: the sun takes its due.`); hurt(s, s.curse, 'the sun curse') }
   if (theme === 'zombie') { s.noise = Math.max(0, s.noise - 1); if (s.turns % 8 === 0) say(s, `Noise: ${s.noise}. ${s.noise ? 'They are listening.' : 'Only your breath.'}`) }
   if (theme === 'deepsea') {
-    s.oxygen = Math.max(0, s.oxygen - 1)
+    s.oxygen = Math.max(0, s.oxygen - 0.25)
     if (s.oxygen % 10 === 0) say(s, `Oxygen: ${s.oxygen}. Find a shrine to refill.`)
     if (!s.oxygen) hurt(s, 2, 'the airless abyss')
   }
 }
 export function step(input: GameState, action: Action): GameState {
   const s = JSON.parse(JSON.stringify(input)) as State
+  // Migrate legacy keys and preserve excess items on the floor.
+  s.keys = keyCount(s)
+  s.inventory = s.inventory.filter(i => i.sprite !== 'key')
+  for (const item of s.inventory.splice(5)) current(s).items.push({ sprite: item.sprite, x: s.hero.x, y: s.hero.y })
   s.events = []
   if (s.status !== 'playing') return s
   if (action.type === 'tick') {
@@ -129,17 +138,17 @@ export function step(input: GameState, action: Action): GameState {
     const enemy = f.enemies.find(e => e.x === x && e.y === y)
     if (enemy) { damage(s, enemy, s.hero.atk); s.noise = Math.min(18, s.noise + 5) }
     else if (f.tiles[p] === 'chest') {
-      const key = s.inventory.findIndex(i => i.sprite === 'key')
-      if (key < 0) { say(s, 'You pass the locked chest. A key is needed to open it.'); moveHero(s, x, y) }
+      if (!s.keys) { say(s, 'You pass the locked chest. A key is needed to open it.'); moveHero(s, x, y) }
       else {
-        s.inventory.splice(key, 1); f.tiles[p] = 'floor'; s.score += 100
-        s.inventory.push(slot(s, 'heal')); say(s, 'The chest yields a remedy and treasure.')
+        s.keys--; f.tiles[p] = 'floor'; s.score += 100
+        if (s.inventory.length < 5) s.inventory.push(slot(s, 'heal'))
+        else { f.items.push({ sprite: 'heal', x, y }); say(s, 'Pack full. The remedy stays by the chest.') }
+        say(s, 'The chest yields a remedy and treasure.')
         if (s.config.theme === 'egypt') { s.curse++; say(s, `Curse: ${s.curse}. The sealed dead remember.`) }
       }
     } else if (f.tiles[p] === 'door') {
       if (s.config.theme === 'future') {
-        const key = s.inventory.findIndex(i => i.sprite === 'key')
-        if (key >= 0) { s.inventory.splice(key, 1); say(s, 'Power Cell consumed. Door online.') }
+        if (s.keys) { s.keys--; say(s, 'Power Cell consumed. Door online.') }
         else { hurt(s, 3, 'a powered lock'); say(s, 'No Power Cell. You force the circuit: -3 HP.') }
       }
       f.tiles[p] = 'floor'
@@ -147,7 +156,7 @@ export function step(input: GameState, action: Action): GameState {
       if (s.config.theme === 'medieval') {
         if (s.hero.hp <= 5) { say(s, 'The shrine refuses your last breath. You pass safely.'); moveHero(s, x, y) }
         else { hurt(s, 5, 'a blood oath'); s.hero.atk++; say(s, 'Blood oath: -5 HP, +1 attack.'); f.tiles[p] = 'floor' }
-      } else if (s.config.theme === 'deepsea') { s.oxygen = 71; heal(s, 5); say(s, 'Shrine: oxygen refilled to 70.') }
+      } else if (s.config.theme === 'deepsea') { s.oxygen = 70.25; heal(s, 5); say(s, 'Shrine: oxygen refilled to 70.') }
       else { heal(s, 8); s.curse = 0; say(s, 'A quiet blessing restores you. Curse: 0.') }
       if (s.config.theme !== 'medieval') f.tiles[p] = 'floor'
     } else {
@@ -170,7 +179,7 @@ export function step(input: GameState, action: Action): GameState {
   } else if (action.type === 'descend') {
     if (pos(s) !== f.stairs || s.floor === 4) return s
     s.floor++; const start = current(s).start; s.hero.x = start % W; s.hero.y = Math.floor(start / W)
-    s.score += 100; s.oxygen = 71; heal(s, 10)
+    s.score += 100; s.oxygen = 70; heal(s, 10)
     s.events.push({ type: 'descend', floor: s.floor }); say(s, `Floor ${s.floor}: ${vocabulary[s.config.theme].place[(s.floor - 1) % 3]}.`)
     s.turns++; reveal(s); return s
   }
@@ -178,13 +187,26 @@ export function step(input: GameState, action: Action): GameState {
   if (s.status === 'playing') { environment(s); enemies(s) }
   reveal(s); return s
 }
+function keyCount(s: State): number {
+  return (s.keys ?? 0) + s.inventory.filter(i => i.sprite === 'key').length
+}
+function meters(s: State): NonNullable<RenderView['meters']> {
+  const result: NonNullable<RenderView['meters']> = []
+  if (s.config.theme === 'egypt') result.push({ id: 'curse', label: 'Curse', value: s.curse, max: Math.max(2, s.curse), danger: s.curse >= 2 })
+  if (s.config.theme === 'zombie') result.push({ id: 'noise', label: 'Noise', value: s.noise, max: 18, danger: s.noise >= 5 })
+  if (s.config.theme === 'deepsea') result.push({ id: 'oxygen', label: 'Air', value: s.oxygen, max: 70, danger: s.oxygen <= 20 })
+  if (s.config.theme === 'steampunk') result.push({ id: 'vent', label: 'Vent', value: 3 - s.turns % 3, max: 3, danger: s.turns % 3 === 2 })
+  const keys = keyCount(s)
+  result.push({ id: 'keys', label: vocabulary[s.config.theme].items[itemTypes.indexOf('key')]!, value: keys, max: Math.max(1, keys), danger: keys === 0 })
+  return result
+}
 export function view(input: GameState): RenderView {
   const s = state(input), f = current(s), visible = visibility(f.tiles, s.hero.x, s.hero.y)
   const cells: RenderView['cells'] = f.tiles.map((tile, p) => ({ tile: f.seen[p] ? tile : 'void', seen: f.seen[p]!, visible: visible[p]! }))
   for (const e of f.enemies) if (visible[e.y * W + e.x]) cells[e.y * W + e.x]!.actor = { sprite: e.sprite, hp: e.hp, maxHp: e.maxHp, id: e.id }
   for (const i of f.items) if (visible[i.y * W + i.x]) cells[i.y * W + i.x]!.item = i.sprite
   cells[pos(s)]!.actor = { sprite: 'hero', id: 0, hp: s.hero.hp, maxHp: s.hero.maxHp }
-  return { width: W, height: H, cells, hero: { ...s.hero }, floor: s.floor, floors: 4, timeLeftMs: s.timeLeftMs, inventory: s.inventory.map(i => ({ ...i })), log: [...s.log], events: JSON.parse(JSON.stringify(s.events)), status: s.status, score: s.score, turns: s.turns }
+  return { width: W, height: H, cells, hero: { ...s.hero }, floor: s.floor, floors: 4, timeLeftMs: s.timeLeftMs, meters: meters(s), inventory: s.inventory.filter(i => i.sprite !== 'key').slice(0, 5).map(i => ({ ...i })), log: [...s.log], events: JSON.parse(JSON.stringify(s.events)), status: s.status, score: s.score, turns: s.turns }
 }
 export function summary(input: GameState): RunSummary {
   const s = state(input), seconds = Math.ceil(s.timeLeftMs / 1000)

@@ -51,7 +51,7 @@ describe('simulation', () => {
     let s = fixture()
     for (const elapsedMs of [-1, NaN, Infinity]) expect(view(step(s, { type: 'tick', elapsedMs })).timeLeftMs).toBe(RUN_MS)
     s.inventory.push({ sprite: 'time', name: 'Time', desc: '' })
-    s = step(s, { type: 'use', slot: 3 }) as State
+    s = step(s, { type: 'use', slot: 2 }) as State
     expect(s.timeLeftMs).toBe(RUN_MS + 20_000)
     s = step(s, { type: 'tick', elapsedMs: RUN_MS + 19_999 }) as State
     expect(s.status).toBe('playing')
@@ -97,7 +97,7 @@ describe('simulation', () => {
   })
   it('allows passage past locked chests and unaffordable shrines', () => {
     for (const tile of ['chest', 'shrine'] as const) {
-      const s = fixture(); s.inventory = []; s.hero.hp = 5
+      const s = fixture(); s.inventory = []; s.keys = 0; s.hero.hp = 5
       s.floors[0]!.tiles[s.hero.y * W + s.hero.x + 1] = tile
       expect(view(step(s, { type: 'move', dir: 'e' })).hero.x).toBe(s.hero.x + 1)
     }
